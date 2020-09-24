@@ -1,16 +1,12 @@
-# todolist
+# todolist 앱 소개
 
-A new Flutter application.
+Flutter를 이용한 메모장 관리 앱.
 
-## Getting Started
+## 주기능
+1. 메모 관리 및 분류
 
-This project is a starting point for a Flutter application.
+## 주요 연습 포인트
+1. 화면별 코드 분리를 통한 코드 가독성 증진.
+2. Item 클래스 메인 코드로 부터 분리
+3. List 항목 분리, List 항목 수정시 해당 내용 갱신
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
