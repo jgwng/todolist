@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/EditToDo.dart';
 import 'TODO.dart';
-import 'package:quiver/iterables.dart';
 import 'TodoDetail.dart';
+import 'APPCODE.dart';
 
 void main() => runApp(TodoAPP());
 
@@ -28,52 +29,85 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
 
-  List<TODO> Thingtodos = List.generate(20,(i)=> TODO(i,'ToDo_$i', 'No.$i Thing You Should do'));
-  void _onTap(int index) {
+  List<TODO> Thingtodos = List.generate(5,(i)=> TODO(i,APPCODE().def_Title(i), 'No.$i Thing You Should do'));
+  var isChecked = false;
+
+
+  AddTodo(BuildContext context) async{
+    Thingtodos.add(TODO(Thingtodos.length, "", ""));
+    final result = await Navigator.push(context, MaterialPageRoute(
+        builder: (context) => EditToDo(todo: Thingtodos[Thingtodos.length-1])
+    ),
+    );
     setState(() {
-      _currentIndex = index;
+
     });
+  }
+
+  Widget _ListView(){
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount : Thingtodos.length,itemBuilder: (content,index) {
+      return ListTile(
+        leading: Checkbox(
+          value: false,
+          onChanged:(value){
+            setState(() {
+              isChecked = value;
+            });
+          }
+        ),
+        title: Text(Thingtodos[index].title),
+        onTap: () async{
+          await Navigator.push(context, MaterialPageRoute(
+
+              builder: (context) => DetailScreen(todo: Thingtodos[index])
+          ),
+          );
+          setState(() {
+
+          });
+        },
+        trailing: IconButton(
+          icon:Icon(Icons.delete_forever),
+          onPressed: (){
+            Thingtodos.removeAt(index);
+            setState(() {
+
+            });
+          }
+        ),
+      );
+
+    });
+  }
+
+  Widget _AddButton(){
+    return RaisedButton(
+      onPressed: (){
+        AddTodo(context);
+      },
+      child: Text('AddMemo'),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    String divider = (((Thingtodos.length)/3).toStringAsFixed(0));
-    print(divider);
-    var pairs = partition(Thingtodos, int.parse(divider)).toList();
-    return Scaffold(
+   return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body : ListView.builder(
-          itemCount : pairs[_currentIndex].length,itemBuilder: (content,index) {
-          return ListTile(title: Text(pairs[_currentIndex][index].title),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => DetailScreen(todo: pairs[_currentIndex][index])
-              ),
-              );
-            },
-          );
-        }),
-        bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            onTap: _onTap,
-            currentIndex: _currentIndex,
-            items: [
-              new BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                title: Text('Home'),
-              ),
-              new BottomNavigationBarItem(
-                icon: Icon(Icons.mail),
-                title: Text('First'),
-              ),
-              new BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                title: Text('Second'),
-              )
-            ]));
+        body : Column(
+          children: <Widget>[
+            _ListView(),
+            _AddButton(),
+          ],
+        )
+   );
+
+
+
   }
 }

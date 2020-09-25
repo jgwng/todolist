@@ -7,15 +7,15 @@ class EditToDo extends StatefulWidget {
   EditToDo({Key key, this.todo}) : super(key:key);
   final TODO todo;
   @override
-  _BmiMainState createState() => _BmiMainState();
+  _EditTODOState createState() => _EditTODOState();
 
 }
 
-class _BmiMainState extends State<EditToDo>{
+class _EditTODOState extends State<EditToDo>{
 
   final _formKey = GlobalKey<FormState>();
-  final _TitleController = TextEditingController();
-  final _MessageController = TextEditingController();
+  final _TitleController = TextEditingController();//Title텍스트 내용 캡쳐
+  final _MessageController = TextEditingController();//Message텍스트 내용 캡쳐
 
   @override
   void dispose() {
@@ -43,14 +43,8 @@ class _BmiMainState extends State<EditToDo>{
                   border: OutlineInputBorder(),
                 ),
                 controller: _TitleController,
-
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value.trim().isEmpty) {
-                    return '키를 입력해 주세요';
-                  }
-                  return null;
-                },
+
               ),
               SizedBox(
                 height: 16.0,
@@ -61,12 +55,6 @@ class _BmiMainState extends State<EditToDo>{
                 ),
                 controller: _MessageController,
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value.trim().isEmpty) {
-                    return '몸무게를 입력해 주세요';
-                  }
-                  return null;
-                },
               ),
               Container(
                 margin: const EdgeInsets.only(top: 16.0),
@@ -76,13 +64,11 @@ class _BmiMainState extends State<EditToDo>{
                     if (_formKey.currentState.validate()){
                       widget.todo.new_title(_TitleController.text);
                       widget.todo.new_Message(_MessageController.text);
-
-                      Navigator.pop(context,MaterialPageRoute(
-                        builder: (context) => DetailScreen(todo: widget.todo)),
+                      Navigator.pop(context,widget.todo,
                       );
                     }
                   },
-                  child: Text('결과'),
+                  child: Text('저장'),
                 ),
               )
             ],
