@@ -29,13 +29,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isChecked = false;
+  List<TODO> Thingtodos = List.generate(5,(i)=> TODO(i,APPCODE().def_Title(i), 'No.$i Thing You Should do',false));
 
-  List<TODO> Thingtodos = List.generate(5,(i)=> TODO(i,APPCODE().def_Title(i), 'No.$i Thing You Should do'));
-  var isChecked = false;
 
 
   AddTodo(BuildContext context) async{
-    Thingtodos.add(TODO(Thingtodos.length, "", ""));
+    Thingtodos.add(TODO(Thingtodos.length, "", "",false));
     final result = await Navigator.push(context, MaterialPageRoute(
         builder: (context) => EditToDo(todo: Thingtodos[Thingtodos.length-1])
     ),
@@ -52,10 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
         itemCount : Thingtodos.length,itemBuilder: (content,index) {
       return ListTile(
         leading: Checkbox(
-          value: false,
+            value: Thingtodos[index].getIsChecked,
           onChanged:(value){
             setState(() {
-              isChecked = value;
+              Thingtodos[index].setChecked(value);
+              Thingtodos.forEach((e) => print(e.getIsChecked));
             });
           }
         ),
@@ -75,7 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: (){
             Thingtodos.removeAt(index);
             setState(() {
-
             });
           }
         ),
@@ -87,12 +87,32 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _AddButton(){
     return RaisedButton(
       onPressed: (){
+
         AddTodo(context);
+        Thingtodos.forEach((e) => e.setChecked(isChecked));
       },
       child: Text('AddMemo'),
     );
   }
 
+  Widget _MultiDelete(){
+    return RaisedButton(
+      onPressed: (){
+        int size = Thingtodos.length;
+        for(int i =0; i<size;i++){
+          if(Thingtodos[i].getIsChecked == true){
+            Thingtodos.removeAt(i);
+
+            i--;
+            size = Thingtodos.length;
+          }
+        }
+        setState(() {
+        });
+      },
+      child: Text('MultiDel'),
+    );
+  }
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -103,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             _ListView(),
             _AddButton(),
+            _MultiDelete(),
           ],
         )
    );
