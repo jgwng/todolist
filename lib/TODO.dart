@@ -6,7 +6,7 @@ class TODO with ChangeNotifier{
   String WhatToDo;
   bool isChecked = false;
 
-  TODO(this.index,this.title,this.WhatToDo,this.isChecked);
+  TODO(this.title,this.WhatToDo,{this.isChecked=false});
 
   String get getTitle => title;
   String get getWhatToDO => WhatToDo;

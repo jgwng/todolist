@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'TODO.dart';
 import 'package:todolist/TodoDetail.dart';
 
 
 class EditToDo extends StatefulWidget {
-  EditToDo({Key key, this.todo}) : super(key:key);
+
+  EditToDo({Key key, this.todo, this.doc}) : super(key:key);
+  final DocumentSnapshot doc;
   final TODO todo;
   @override
   _EditTODOState createState() => _EditTODOState();
@@ -27,8 +30,15 @@ class _EditTODOState extends State<EditToDo>{
   @override
   Widget build(BuildContext context) {
 
-    _TitleController..text = widget.todo.title;//해당 TextEditForm 초기값 설정
-    _MessageController..text = widget.todo.WhatToDo;//해당 TextEditForm 초기값 설정
+    if(widget.doc == null){
+      _TitleController..text = "";//해당 TextEditForm 초기값 설정
+      _MessageController..text = "";//해당 TextEditForm 초기값 설정
+    }
+    else{
+      _TitleController..text = widget.todo.title;//해당 TextEditForm 초기값 설정
+      _MessageController..text = widget.todo.WhatToDo;//해당 TextEditForm 초기값 설정
+    }
+
 
     return Scaffold(
       appBar: AppBar(title: Text('Edit WhatToDo')),
@@ -62,11 +72,19 @@ class _EditTODOState extends State<EditToDo>{
                 child: RaisedButton(
                   onPressed: (){
                     if (_formKey.currentState.validate()){
-                      widget.todo.new_title(_TitleController.text);
-                      widget.todo.new_Message(_MessageController.text);
-                      Navigator.pop(context,widget.todo,
-                      );
+                      // _TitleController.text / _MessageController.text
+                      if((_TitleController.text != null && _MessageController.text != null)
+                      & (widget.doc == null))
+                    {
+                        Firestore.instance.collection('whattodo').add({'title' : _TitleController.text,
+                          'message' : _MessageController.text,'checked' : false});
+                      } else if (widget.doc != null){
+                        Firestore.instance.collection('whattodo').document(widget.doc.documentID).updateData({'title' : _TitleController.text,
+                            'message' : _MessageController.text});
+                      }
+
                     }
+                    Navigator.pop(context);
                   },
                   child: Text('저장'),
                 ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todolist/EditToDo.dart';
 import 'TODO.dart';
@@ -5,7 +6,8 @@ import 'package:provider/provider.dart';
 
 class DetailScreen extends StatefulWidget{
   final TODO todo;
-  const DetailScreen({Key key, @required this.todo}) : super(key:key);
+  final DocumentSnapshot doc;
+  const DetailScreen({Key key, @required this.todo, @required this.doc}) : super(key:key);
   @override
   State createState() => _DetailScreenState();
 
@@ -13,7 +15,6 @@ class DetailScreen extends StatefulWidget{
 
 
 class _DetailScreenState extends State<DetailScreen>{
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,12 @@ class _DetailScreenState extends State<DetailScreen>{
         padding: EdgeInsets.all(16.0),
         child :GestureDetector(
           onTap:() async {
-           await Navigator.push(context,MaterialPageRoute(builder: (context) => EditToDo(todo: widget.todo)));
+           final List<TODO> myList  = await Navigator.push(context,MaterialPageRoute(builder: (context) => EditToDo(todo: widget.todo,doc: widget.doc)));
 
           setState(() {
-          });// 자료
+            print(myList.length);
+
+          });// 자료갱신
 
         },
           child: Text(widget.todo.WhatToDo.toString(),

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "332150309657",
+    "firebase_url": "https://whattodo-b9318.firebaseio.com",
+    "project_id": "whattodo-b9318",
+    "storage_bucket": "whattodo-b9318.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332150309657:android:e63dcf6ce667ec30937b88",
+        "android_client_info": {
+          "package_name": "com.example.todolist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332150309657-g06ds20qcd0a420e02roslufn9rfs73s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcNW3j06UNs7Bxpzb1UOelOwIEfpZYJ0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332150309657-g06ds20qcd0a420e02roslufn9rfs73s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
