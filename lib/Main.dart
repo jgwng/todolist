@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return CircularProgressIndicator();
                 }
                 final documents = snapshot.data.documents;
-                print(documents);
+
                 return Expanded(
                   child: ListView(
                     children:

@@ -24,10 +24,12 @@ class _DetailScreenState extends State<DetailScreen>{
         padding: EdgeInsets.all(16.0),
         child :GestureDetector(
           onTap:() async {
-           final List<TODO> myList  = await Navigator.push(context,MaterialPageRoute(builder: (context) => EditToDo(todo: widget.todo,doc: widget.doc)));
+           var result = await Navigator.push(context,MaterialPageRoute(builder: (context) => EditToDo(todo: widget.todo,doc: widget.doc)));
 
           setState(() {
-            print(myList.length);
+            List<TODO> newList = List<TODO>.generate(1, (e) => result);
+            print(newList[0].WhatToDo);
+
 
           });// 자료갱신
 

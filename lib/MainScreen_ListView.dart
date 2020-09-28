@@ -32,7 +32,6 @@ class MainListViewState extends State<Main_ListView> {
             onChanged: (value) {
               setState(() {
                 widget.thingtodos[index].setChecked(value);
-                widget.thingtodos.forEach((e) => print(e.getIsChecked));
               });
             }
         ),
