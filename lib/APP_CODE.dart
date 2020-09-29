@@ -1,7 +1,6 @@
 library todolist.globals;
 
-String Message = 'st Thing You Should do';
-String Title = 'ToDo_';
+String MainScreenTitle = 'TODOAPP Home Page';
 
 
 
