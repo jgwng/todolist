@@ -1,0 +1,25 @@
+1. 폴더 생성후 해당 폴더 아래 각각의 언어에 관련된 Json 작성 ( ex) 지금 프로젝트의 assets/ko.json)
+2. Translation.dart 파일 복붙
+    - String data = await rootBundle.loadString('assets/${this.locale.languageCode}.json'); //loadString안에 json저장된 파일 디렉토리 작성
+    - bool isSupported(Locale locale) => ['ko', 'en'].contains(locale.languageCode); // 번역 가능한 언어 종류 작성
+3. main이 되는 dart파일에 다음 내용 작성
+    return MaterialApp(
+          supportedLocales: [
+            const Locale('ko', 'KR'),
+            const Locale('en', 'US') // 작성한 언어 코드들 다 작성
+          ],
+          localizationsDelegates: [
+            const DemoLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
+            for (Locale supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
+                return supportedLocale;
+              }
+            }
+
+            return supportedLocales.first;
+          },
+4. Text((DemoLocalizations.of(context).trans(widget.title))) 다음과 같이 작성하여 trans안에 번역할 단어 포함

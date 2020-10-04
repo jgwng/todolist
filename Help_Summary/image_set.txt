@@ -1,0 +1,15 @@
+안드로이드 해상도 단위	     Flutter 픽셀 비율
+ldpi	                 0.75x
+mdpi	                 1.0x
+hdpi	                 1.5x
+xhdpi	                 2.0x
+xxhdpi	                 3.0x
+xxxhdpi	                 4.0x
+
+
+//기기 해상도에 맞게 이미지 나타나게 하는 법
+//1. Image를 넣을 폴더...(1)를 만든 후 2.0x...(2), 3.0x...(3), 4.0x...(4) 폴더를 하위에 생성한다.
+  2. (1)에 원본 Image를 넣고 (2), (3), (4)에 해당 해상도에 맞게 Image를 넣는다. (Image들의 이름은 모두 동일해야 함)
+  3. pubspec.yaml file에서 flutter: 아래에 "assets: -(1)/[image이름]" 을 추가한다.
+  4. Image(image: AssetImage('(1)/[image이름]')) Widget을 출력하고 싶은 곳에 넣는다.
+  참고 사이트 : https://cdl-dev.tistory.com/14

@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/EditToDo.dart';
+import 'package:todolist/Translation.dart';
 import 'TODO.dart';
-import 'MainScreen_ListView.dart';
 import 'package:todolist/TodoDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'APP_CODE.dart' as globals;
 import 'package:todolist/PassWordScreen.dart';
 
-class TodoAPP extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TODOAPP Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'TODOAPP Home Page'),
-    );
-  }
-}
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -41,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
        // print(password);
 
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => PassWordScreen()
+            builder: (context) => EditToDo()
         ),
         );
         setState(() {
@@ -55,10 +42,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _MultiDelete(){
     return RaisedButton(
       onPressed: (){
-        Firestore.instance.collection('whattodo').where('checked', isEqualTo :  true).getDocuments().then((snapshot) {
+        Firestore.instance.collection(globals.DatabaseName).where(globals.DB_Check, isEqualTo :  true).getDocuments().then((snapshot) {
           for(DocumentSnapshot ds in snapshot.documents){
             print(ds.reference);
-            Firestore.instance.collection('whattodo').document(ds.documentID).delete();
+            Firestore.instance.collection(globals.DatabaseName).document(ds.documentID).delete();
           }
         });
         setState(() {
@@ -71,13 +58,25 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
    return new WillPopScope(child: Scaffold(
        appBar: AppBar(
-         title: Text(widget.title),
+         title: Text((DemoLocalizations.of(context).trans(widget.title))),
+         actions:  <Widget>[
+           IconButton(
+             icon : Icon(
+               Icons.lock,
+               color : Colors.black,
+             ),
+             onPressed: (){ Navigator.push(context, MaterialPageRoute(
+                 builder: (context) => PassWordScreen(title :globals.CheckingPassWordTitle)
+             ),
+             );},
+           )
+         ]
        ),
        body : Column(
          children: <Widget>[
            // Main_ListView(thingtodos: Thingtodos), //가독성을 위한 코드 분리
            StreamBuilder<QuerySnapshot>(
-               stream: Firestore.instance.collection('whattodo').snapshots(),
+               stream: Firestore.instance.collection(globals.DatabaseName).snapshots(),
                builder:(context, snapshot){
                  if(!snapshot.hasData){
                    return CircularProgressIndicator();
@@ -102,14 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
   Widget _buildItemWidget(DocumentSnapshot doc) {
-    final memo = TODO(doc['title'], doc['message'],isChecked : doc['checked']);
+    final memo = TODO(doc[globals.DB_MemoTitle], doc[globals.DB_MemoMessage],isChecked : doc[globals.DB_Check]);
 
     return ListTile(
       leading:  Checkbox(
           value: memo.getIsChecked,
           onChanged: (value) {
-            Firestore.instance.collection('whattodo').document(doc.documentID).updateData({
-              'checked': !doc['checked'],
+            Firestore.instance.collection(globals.DatabaseName).document(doc.documentID).updateData({
+              globals.DB_Check: !doc[globals.DB_Check],
             });
             setState(() {
 
@@ -121,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onTap: () async {
         await Navigator.push(context, MaterialPageRoute(
 
-            builder: (context) => DetailScreen(todo: memo,doc: doc)
+            builder: (context) => DetailScreen(title: globals.DetailMemo,todo: memo,doc: doc)
         ),
         );
         setState(() {
@@ -131,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
       trailing: IconButton(
         icon: Icon(Icons.delete_forever),
         onPressed: (){
-            Firestore.instance.collection('whattodo').document(doc.documentID).delete();
+            Firestore.instance.collection(globals.DatabaseName).document(doc.documentID).delete();
          setState(() {});
             }
       ),
@@ -147,9 +146,9 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           new FlatButton(
             onPressed: () =>{
-                Firestore.instance.collection('whattodo').getDocuments().then((snapshot) {
+                Firestore.instance.collection(globals.DatabaseName).getDocuments().then((snapshot) {
                   for(DocumentSnapshot ds in snapshot.documents){
-                    Firestore.instance.collection('whattodo').document(ds.documentID).updateData({'checked': false},);
+                    Firestore.instance.collection(globals.DatabaseName).document(ds.documentID).updateData({globals.DB_Check: false},);
                   }
                 }),
               Navigator.of(context).pop(true),

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/Main.dart';
+import 'package:todolist/Translation.dart';
 import 'APP_CODE.dart' as globals;
 
 class PassWordScreen extends StatefulWidget{
-  PassWordScreen({Key key}) : super(key:key);
+  PassWordScreen({Key key, this.title}) : super(key: key);
+  final String title;
   @override
   _PassWordScreenState createState() => _PassWordScreenState();
 
@@ -13,54 +15,57 @@ class PassWordScreen extends StatefulWidget{
 
 
 class _PassWordScreenState extends State<PassWordScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _passwordformKey = GlobalKey<FormState>();
   final _PassWordController = TextEditingController();
   SharedPreferences _preferences;
 
-  @override
-  void initState(){
-    super.initState();
-    _loadCounter();
-  }
-
   _loadCounter() async{
     _preferences = await SharedPreferences.getInstance();
-    setState(() {
 
-      _preferences.setString('PassWord',"");
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    _loadCounter();
     return Scaffold(
-      appBar: AppBar(title: Text('비밀번호 설정')),
+      appBar: AppBar(title: Text(DemoLocalizations.of(context).trans(widget.title))),
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: _passwordformKey,
           child: Column(
             children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+
                 ),
                 controller: _PassWordController,
                 keyboardType: TextInputType.number,
+                validator: (value){
 
+                },
               ),
               Container(
                 margin: const EdgeInsets.only(top: 16.0),
                 alignment: Alignment.centerRight,
                 child: RaisedButton(
                   onPressed: () {
-                    if(_formKey.currentState.validate()){
-                      print(_PassWordController.text);
-                      _preferences.setString('PassWord',_PassWordController.text);
-                    }
-                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> MyHomePage(title: (globals.MainScreenTitle))));
+                    if (_passwordformKey.currentState.validate()) {
+                      if(_preferences.getString(globals.PassWord) == null){
 
+                        _preferences.setString(globals.PassWord, _PassWordController.text);
+                        _preferences.setBool(globals.checkFirstTime,false);
+
+                        print('FirstScreen');
+                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> MyHomePage(title: (globals.MainScreenTitle))));
+                      }
+                      else if(_preferences.getString(globals.PassWord) ==  _PassWordController.text){
+                        Navigator.pop(context);
+                       print('SecretMode');
+                      }
+                    }
                   },
                   child: Text('저장'),
                 ),

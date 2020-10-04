@@ -1,0 +1,26 @@
+1. Column(children:<Widget>[[위젯],[위젯],[위젯]],),  / Row~ => 위젯들 세로/가로 배치
+
+2. MainAxis - 위젯의 기본방향 (column : 아래 / row : 오른쪽)
+    -MainAxisSize : max-남은 공간 모두 / min-포함된 컨텐츠 크기
+    -MainAxisAlignment : 배치(center / start/ end) / 자식간의 공간배치 : (spaceEvenly/spaceBetween/spaceAround)
+
+3.  ListView - ListTile으로 표현하면 용이
+    -ListTile : listview의 아이템내 각각 표현 => leading(왼쪽 위젯) / title(가운데 위젯) / trailing(오른쪽 위젯)
+
+4. GridView - crossAxisCount : 해당 GridView의 열수 지정
+
+5. Center(child : [위젯],), 해당 위젯을 화면 정 가운데 배치
+
+6. Padding : 안쪽 여백 표현할 때 사용
+    - Padding(padding:const EdgeInsets.all(40.0), //각 방향 모두 지정
+              child:[위젯],),
+7. Align(alignment: Alignment.bottomRight,
+         child:[위젯],
+         )
+  - bottomRight / bottomCenter / bottomLeft
+  - centerLeft / center / centerRight
+  - topLeft / topCenter / topRight
+
+8. Expanded(flex :[비율] (int로 지정)
+
+9. Card - elevation : [실수값]
