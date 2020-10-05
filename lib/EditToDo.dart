@@ -64,33 +64,46 @@ class _EditTODOState extends State<EditToDo>{
                 keyboardType: TextInputType.number,
               ),//(Message 입력 부분)
               Container(
-                margin: const EdgeInsets.only(top: 16.0),
-                alignment: Alignment.centerRight,
-                child: RaisedButton(
-                  onPressed: (){
-                    if (_formKey.currentState.validate()){
-                    if(_TitleController.text == "" && _MessageController.text ==""){
-                    }//제목과 내용부분 모두가 빈칸 일 경우
-                    else{
-                      if(widget.doc != null)// 기존에 저장한 메모를 수정하려 하는 경우
-                      {
-                        Firestore.instance.collection(globals.DatabaseName).document(widget.doc.documentID).updateData({globals.DB_MemoTitle : _TitleController.text,
-                        globals.DB_MemoMessage : _MessageController.text});
+                child: Row(
+                  children: <Widget>[
+                    Checkbox(
+                      value: widget.todo.isSecret,
+                      onChanged: (value){
+                        Firestore.instance.collection(globals.DatabaseName).document(widget.doc.documentID).updateData({globals.DB_Check: value});
+                        setState(() {
+                          widget.todo.setSecret(value);
+                        });
+                      },
+                  ),
+                    Text("비밀 메모"),
+                    Spacer(),
+                    RaisedButton(
+                      padding: EdgeInsets.all(10),
+                    onPressed: (){
+                      if (_formKey.currentState.validate()){
+                        if(_TitleController.text == "" && _MessageController.text ==""){
+                        }//제목과 내용부분 모두가 빈칸 일 경우
+                        else{
+                          if(widget.doc != null)// 기존에 저장한 메모를 수정하려 하는 경우
+                              {
+                            Firestore.instance.collection(globals.DatabaseName).document(widget.doc.documentID).updateData({globals.DB_MemoTitle : _TitleController.text,
+                              globals.DB_MemoMessage : _MessageController.text});
 
-                      widget.todo.new_title(_TitleController.text);
-                      widget.todo.new_Message(_MessageController.text);
+                            widget.todo.new_title(_TitleController.text);
+                            widget.todo.new_Message(_MessageController.text);
+                          }
+                          else{
+                            Firestore.instance.collection(globals.DatabaseName).add({globals.DB_MemoTitle : _TitleController.text,
+                              globals.DB_MemoMessage : _MessageController.text,globals.DB_Check : false});
+                          }// DB에 새로운 메모를 추가하는 경우
+                        }
                       }
-                      else{
-                        Firestore.instance.collection(globals.DatabaseName).add({globals.DB_MemoTitle : _TitleController.text,
-                          globals.DB_MemoMessage : _MessageController.text,globals.DB_Check : false});
-                        }// DB에 새로운 메모를 추가하는 경우
-                      }
-                    }
 
-                    Navigator.of(context).pop(widget.todo);
-                  },
-                  child: Text('저장'),
-                ),
+                      Navigator.of(context).pop(widget.todo);
+                    },
+                      child: Text('저장'),
+                  ),],
+                )
               )
             ],
           ),

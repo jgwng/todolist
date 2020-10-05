@@ -21,7 +21,7 @@ class _PassWordScreenState extends State<PassWordScreen> {
 
   _loadCounter() async{
     _preferences = await SharedPreferences.getInstance();
-
+    _preferences.setBool('SecretMode',true);
   }
 
   @override
