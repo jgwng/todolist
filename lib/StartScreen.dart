@@ -12,6 +12,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isFirst  = prefs.getBool(globals.checkFirstTime) ?? true;
+  if(isFirst){
+    prefs.setBool("SecretMode",false);
+  }
   _isFirst = isFirst;
   runApp(TODOLIST());
 }
@@ -22,10 +25,10 @@ class TODOLIST extends StatelessWidget {
     var activity;
     if(_isFirst){
       activity = PassWordScreen(title: globals.MainScreenTitle);
-
     }else{
       activity = MyHomePage(title: globals.MainScreenTitle);
     }
+
     return MaterialApp(
       supportedLocales: [
         const Locale('ko', 'KR'),

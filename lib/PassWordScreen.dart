@@ -21,7 +21,6 @@ class _PassWordScreenState extends State<PassWordScreen> {
 
   _loadCounter() async{
     _preferences = await SharedPreferences.getInstance();
-    _preferences.setBool('SecretMode',true);
   }
 
   @override
@@ -58,13 +57,13 @@ class _PassWordScreenState extends State<PassWordScreen> {
                         _preferences.setString(globals.PassWord, _PassWordController.text);
                         _preferences.setBool(globals.checkFirstTime,false);
 
-                        print('FirstScreen');
-                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> MyHomePage(title: (globals.MainScreenTitle))));
                       }
                       else if(_preferences.getString(globals.PassWord) ==  _PassWordController.text){
-                        Navigator.pop(context);
-                       print('SecretMode');
+                        bool currentMode = _preferences.getBool('SecretMode');
+                        currentMode = !currentMode;
+                        _preferences.setBool('SecretMode',currentMode);
                       }
+                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> MyHomePage(title: (globals.MainScreenTitle))));
                     }
                   },
                   child: Text('저장'),
