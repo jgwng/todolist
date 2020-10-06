@@ -24,3 +24,5 @@
 8. Expanded(flex :[비율] (int로 지정)
 
 9. Card - elevation : [실수값]
+
+10. Spacer() - 위젯 사이의 빈공간을 위한 위젯 (flex을 통한 비율 조정)

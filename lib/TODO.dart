@@ -4,14 +4,14 @@ class TODO with ChangeNotifier{
   int index;
   String title;
   String WhatToDo;
-  bool isChecked = false;
+  bool isChecked,isSecret = false;
 
-  TODO(this.title,this.WhatToDo,{this.isChecked=false});
+  TODO(this.title,this.WhatToDo,{this.isChecked=false, this.isSecret=false});
 
   String get getTitle => title;
   String get getWhatToDO => WhatToDo;
   bool get getIsChecked => isChecked;
-
+  bool get getIsSecret => isSecret;
 
   void setChecked(bool checked){
     isChecked = checked;
@@ -23,6 +23,10 @@ class TODO with ChangeNotifier{
   }
   void new_Message(String text){
     WhatToDo = text;
+    notifyListeners();
+  }
+  void setSecret(bool secret){
+    isSecret = secret;
     notifyListeners();
   }
 }

@@ -7,6 +7,7 @@ import 'APP_CODE.dart' as globals;
 import 'Translation.dart';
 
 bool _isFirst;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
