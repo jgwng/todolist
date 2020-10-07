@@ -30,10 +30,6 @@ class _DetailScreenState extends State<DetailScreen>{
            var result = await Navigator.push(context,MaterialPageRoute(builder: (context) => EditToDo(title : globals.EditingMemo,todo: widget.todo,doc: widget.doc)));
 
           setState(() {
-            List<TODO> newList = List<TODO>.generate(1, (e) => result);
-            print(newList[0].WhatToDo);
-
-
           });// 자료갱신
 
         },

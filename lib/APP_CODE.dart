@@ -1,5 +1,7 @@
 library todolist.globals;
 
+String Save = "SaveMemo";
+String Secret = "SecretMemo";
 String MainScreenTitle = 'MainTitle';
 String DetailMemo = "MemoDetail";
 String EditingMemo="EditingMemo";
@@ -8,10 +10,25 @@ String CheckingPassWordTitle = 'CheckingPassWordTitle';
 String PassWord = "PassWord";
 String checkFirstTime = "isFirst";
 String DatabaseName  = 'whattodo';
+String MemoAdd = "AddMemo";
+String MultiSelect = "MultiDel";
+
+
+String secretMode = "SecretMode";
+String DialogTitle = "DG_Title";
+String DialogContent = "DG_Content";
+String DialogYes = "Yes";
+String DialogNo = "No";
+
+String secretDialog = "SecretDialog";
 
 String DB_MemoTitle = 'title';
 String DB_MemoMessage = 'message';
 String DB_Check = 'checked';
+String DB_Secret = 'Secret';
+
+
+
 
 // 해당 앱내에 변수 글로벌하게 쓰는 방법
 // 1. 프로젝트이름.globals -> 쓰려고 하는 변수들 작성

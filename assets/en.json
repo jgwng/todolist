@@ -1,7 +1,20 @@
 {
+  "DG_Title" : "Are you sure?",
+  "DG_Content" : "Do you want to exit an App?",
+
+  "Yes" : "예",
+  "No" : "아니오",
+
+  "MultiDel" : "MultiDelete",
+  "AddMemo" : "Add Memo",
+
+  "SecretDialog" : "Now The app is in Secret Mode",
   "MainTitle" : "TODOLIST",
   "SettingPassWordTitle" : "Enter the Password You want",
   "CheckingPassWordTitle" : "Checking your Password",
   "MemoDetail" : "About Your Memo",
-  "EditingMemo": "Edit Your Memo"
+  "EditingMemo": "Edit Your Memo",
+  "Secret" : "Secret Memo",
+
+  "SaveMemo" : "Save Memo"
 }

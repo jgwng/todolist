@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:todolist/Translation.dart';
 import 'TODO.dart';
 import 'APP_CODE.dart' as globals;
-import 'package:todolist/TodoDetail.dart';
 
 
 class EditToDo extends StatefulWidget {
@@ -75,7 +74,7 @@ class _EditTODOState extends State<EditToDo>{
                         });
                       },
                   ),
-                    Text("비밀 메모"),
+                    Text(DemoLocalizations.of(context).trans(globals.Secret)),
                     Spacer(),
                     RaisedButton(
                       padding: EdgeInsets.all(10),
@@ -94,14 +93,14 @@ class _EditTODOState extends State<EditToDo>{
                           }
                           else{
                             Firestore.instance.collection(globals.DatabaseName).add({globals.DB_MemoTitle : _TitleController.text,
-                              globals.DB_MemoMessage : _MessageController.text,globals.DB_Check : false});
+                              globals.DB_MemoMessage : _MessageController.text,globals.DB_Check : false,globals.DB_Secret : widget.todo.getIsSecret});
                           }// DB에 새로운 메모를 추가하는 경우
                         }
                       }
 
                       Navigator.of(context).pop(widget.todo);
                     },
-                      child: Text('저장'),
+                      child: Text(DemoLocalizations.of(context).trans(globals.Save)),
                   ),],
                 )
               )

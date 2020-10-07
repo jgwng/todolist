@@ -18,14 +18,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<SharedPreferences> _prefs;
   SharedPreferences preference;
   bool SecretMode;
 
 
   _loadPreference() async{
     preference = await SharedPreferences.getInstance();
-    SecretMode = preference.getBool("SecretMode");
+    SecretMode = preference.getBool(globals.secretMode);
 
   }
   @override
@@ -93,9 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _AddButton() {
     return RaisedButton(
       onPressed: () {
-        // SharedPreferences preferences = await SharedPreferences.getInstance();
-        // String password  = preferences.getString('PassWord');
-        // print(password);
 
         Navigator.push(context, MaterialPageRoute(
             builder: (context) => EditToDo()
@@ -103,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         setState(() {});
       },
-      child: Text('AddMemo'),
+      child: Text(DemoLocalizations.of(context).trans(globals.MemoAdd)),
     );
   }
 
@@ -113,21 +109,19 @@ class _MyHomePageState extends State<MyHomePage> {
         Firestore.instance.collection(globals.DatabaseName).where(
             globals.DB_Check, isEqualTo: true).getDocuments().then((snapshot) {
           for (DocumentSnapshot ds in snapshot.documents) {
-            print(ds.reference);
             Firestore.instance.collection(globals.DatabaseName).document(
                 ds.documentID).delete();
           }
         });
         setState(() {});
-        print(preference.getBool("SecretMode"));
       },
-      child: Text('MultiDel'),
+      child: Text(DemoLocalizations.of(context).trans(globals.MultiSelect)),
     ); // 체크된 아이템 모두 삭제
   }
 
   Widget _buildItemWidget(DocumentSnapshot doc) {
     final memo = TODO(doc[globals.DB_MemoTitle], doc[globals.DB_MemoMessage],
-        isChecked: doc[globals.DB_Check], isSecret: doc["Secret"]);
+        isChecked: doc[globals.DB_Check], isSecret: doc[globals.DB_Secret]);
     return Card(
       child: Container(
         decoration: BoxDecoration(color: Color.fromRGBO(204, 153, 255, 0.3)),
@@ -163,8 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
           context: context,
           builder: (context) =>
           new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit an App'),
+            title: new Text(DemoLocalizations.of(context).trans(globals.DialogTitle)),
+            content: new Text(DemoLocalizations.of(context).trans(globals.DialogContent)),
             actions: <Widget>[
               new FlatButton(
                 onPressed: () =>
@@ -180,11 +174,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   }),
                   Navigator.of(context).pop(true),
                 },
-                child: new Text('Yes'),
+                child: new Text(DemoLocalizations.of(context).trans(globals.DialogYes)),
               ),
               new FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
+                child: new Text(DemoLocalizations.of(context).trans(globals.DialogNo)),
               ),
             ],
           ),
@@ -195,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (SecretMode) {
       if (memo.getIsSecret) {
-        return Container(child: PopUpDialog(memo, doc));
+        return Container(child: SecretMemo(memo, doc));
       } else {
         return Container(child: Memomessage(memo, doc));
       }
@@ -216,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
   }
 
-  Widget PopUpDialog(TODO memo, DocumentSnapshot doc) {
+  Widget SecretMemo(TODO memo, DocumentSnapshot doc) {
     return Padding(
         padding: EdgeInsets.all(16.0),
         child :GestureDetector(
@@ -224,10 +218,10 @@ class _MyHomePageState extends State<MyHomePage> {
             await showDialog(
                 context: context,
                 builder: (context)=> new AlertDialog(
-                  content: new Text('Now The app is in Secret Mode'),),);
+                  content: new Text(DemoLocalizations.of(context).trans(globals.secretDialog)),),);
 
           },
-          child: Text(memo.getTitle,),
+          child : Image.asset('assets/Image/ic_launcher.png', width: 30, height: 50, fit: BoxFit.fill),
             // child : Image.asset('assets/Image/ic_launcher.png', width: 30, height: 50, fit: BoxFit.fill)
         ));
 

@@ -13,7 +13,7 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isFirst  = prefs.getBool(globals.checkFirstTime) ?? true;
   if(isFirst){
-    prefs.setBool("SecretMode",false);
+    prefs.setBool(globals.secretMode,false);
   }
   _isFirst = isFirst;
   runApp(TODOLIST());
@@ -54,7 +54,7 @@ class TODOLIST extends StatelessWidget {
         primaryColor: Colors.deepPurple,
 
       ),
-      routes:{'/ClickPage':(context)=> MyHomePage(title: 'TODOAPP Home Page')},
+      routes:{'/ClickPage':(context)=> MyHomePage(title: DemoLocalizations.of(context).trans(globals.MainScreenTitle))},
       home: activity,
     );
   }
